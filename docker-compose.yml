@@ -12,15 +12,16 @@ services:
     depends_on:
       - fastapi
       - rasa
+      - utn_osil_php
 
   fastapi:
-    build: ./fastapi-app
+    build: ./chatbot/fastapi-app
     container_name: fastapi_app
     ports:
       - 8000:8000
     volumes:
-      - ./fastapi-app:/app
-      - ./shared_data:/app/shared_data
+      - ./chatbot/fastapi-app:/app
+      - ./chatbot/shared_data:/app/shared_data
       - /var/run/docker.sock:/var/run/docker.sock
     depends_on:
       sql_db:
@@ -28,13 +29,13 @@ services:
     command: sh -c "python main.py"
 
   rasa:
-    build: ./rasa-app
+    build: ./chatbot/rasa-app
     container_name: rasa_app
     ports:
       - 5005:5005
     volumes:
-      - ./rasa-app:/app
-      - ./shared_data:/app/shared_data   # Directorio compartido
+      - ./chatbot/rasa-app:/app
+      - ./chatbot/shared_data:/app/shared_data   # Directorio compartido
     command: sh -c "rasa run -m models --enable-api --cors '*'"
 
   utn_osil_php:
