@@ -37,15 +37,51 @@ services:
       - ./shared_data:/app/shared_data   # Directorio compartido
     command: sh -c "rasa run -m models --enable-api --cors '*'"
 
+  utn_osil_php:
+    build:
+      context: ./utn-osil/
+      target: php
+      args:
+        - APP_ENV=${APP_ENV}
+    container_name: utn_osil_php_app
+    environment:
+      - APP_ENV=${APP_ENV}
+      - CONTAINER_ROLE=app
+    working_dir: /var/www
+    volumes:
+      - ./utn-osil:/var/www
+    ports:
+      - 8001:8000
+    depends_on:
+      sql_db:
+        condition: service_healthy
+    env_file:
+      - ./utn-osil/.env
+
+  utn_osil_node:
+    build:
+      context: ./utn-osil/
+      target: node
+    container_name: utn_osil_node_app
+    volumes:
+      - ./utn-osil:/var/www
+      # - ./utn-osil/node_modules:/var/www/node_modules
+    ports:
+      - 5173:5173
+    tty: true
+    command: sh -c "npm run dev -- --host=0.0.0.0"
+
   sql_db:
     image: postgres:15.2
     container_name: sql_db
     environment:
       POSTGRES_PASSWORD: example
-      POSTGRES_DB: chatbot
+      # POSTGRES_DB: chatbot
+      POSTGRES_INITDB_ARGS: "--data-checksums --username=postgres"
       TZ: America/Hermosillo
     volumes:
       - ./DB/postgresql:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - 5432:5432
     healthcheck:
@@ -56,6 +92,7 @@ services:
 
   adminer:
     image: adminer
+    container_name: adminer
     environment:
       TZ: America/Hermosillo
     ports:
