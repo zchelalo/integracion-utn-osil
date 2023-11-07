@@ -1,0 +1,43 @@
+version: '3.1'
+nlu:
+- intent: saludar
+  examples: |
+    - hey
+    - ey
+    - hola
+    - holi
+    - que onda
+    - buenos dias
+    - buenas tardes
+    - buenas noches
+    - que rollo
+    - que pasa?
+    - ey wey
+    - buenosdias
+    - buenastardes
+    - buenasnoches
+    - que pedo
+    - buen dia
+    - buena tarde
+    - buena noche
+- intent: despedir
+  examples: |
+    - adios
+    - bye
+    - nos vemos
+    - nos vemos luego
+    - ahi nos wachamos
+    - goodbye
+    - ten un buen dia
+    - al rato
+    - sale bye
+    - sale pues
+- intent: soy_un_bot
+  examples: |
+    - eres un bot?
+    - eres un humano?
+    - estoy hablando con un bot?
+    - estoy hablando con un humano?
+    - que eres?
+    - quien eres?
+    - con quien hablo?
