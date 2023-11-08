@@ -56,8 +56,8 @@ services:
     depends_on:
       sql_db:
         condition: service_healthy
-    env_file:
-      - ./utn-osil/.env
+    # env_file:
+    #   - ./utn-osil/.env
 
   utn_osil_node:
     build:
